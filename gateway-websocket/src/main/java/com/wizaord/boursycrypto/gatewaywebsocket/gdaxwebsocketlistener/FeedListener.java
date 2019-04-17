@@ -1,8 +1,8 @@
-package com.wizaord.boursycrypto.gatewaywebsocket;
+package com.wizaord.boursycrypto.gatewaywebsocket.gdaxwebsocketlistener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.wizaord.boursycrypto.gatewaywebsocket.beans.SignatureHeader;
-import com.wizaord.boursycrypto.gatewaywebsocket.beans.SubscribeRequest;
+import com.wizaord.boursycrypto.gatewaywebsocket.gdaxwebsocketlistener.beans.SignatureHeader;
+import com.wizaord.boursycrypto.gatewaywebsocket.gdaxwebsocketlistener.beans.SubscribeRequest;
 import org.glassfish.tyrus.client.ClientManager;
 import org.glassfish.tyrus.client.ClientProperties;
 import org.slf4j.Logger;

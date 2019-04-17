@@ -1,4 +1,4 @@
-package com.wizaord.boursycrypto.gatewaywebsocket.beans;
+package com.wizaord.boursycrypto.gatewaywebsocket.gdaxwebsocketlistener.beans;
 
 import lombok.*;
 

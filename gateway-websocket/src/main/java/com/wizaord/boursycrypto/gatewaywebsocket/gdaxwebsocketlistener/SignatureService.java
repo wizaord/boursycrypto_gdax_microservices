@@ -1,13 +1,11 @@
-package com.wizaord.boursycrypto.gatewaywebsocket;
+package com.wizaord.boursycrypto.gatewaywebsocket.gdaxwebsocketlistener;
 
-import com.wizaord.boursycrypto.gatewaywebsocket.beans.SignatureHeader;
+import com.wizaord.boursycrypto.gatewaywebsocket.gdaxwebsocketlistener.beans.SignatureHeader;
 import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;

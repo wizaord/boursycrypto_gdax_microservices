@@ -1,4 +1,4 @@
-package com.wizaord.boursycrypto.gatewaywebsocket.beans;
+package com.wizaord.boursycrypto.gatewaywebsocket.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;

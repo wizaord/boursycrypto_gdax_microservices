@@ -1,6 +1,6 @@
-package com.wizaord.boursycrypto.gatewaywebsocket;
+package com.wizaord.boursycrypto.gatewaywebsocket.gdaxwebsocketlistener;
 
-import com.wizaord.boursycrypto.gatewaywebsocket.beans.SignatureHeader;
+import com.wizaord.boursycrypto.gatewaywebsocket.gdaxwebsocketlistener.beans.SignatureHeader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

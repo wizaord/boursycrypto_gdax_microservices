@@ -1,4 +1,4 @@
-package com.wizaord.boursycrypto.gatewaywebsocket;
+package com.wizaord.boursycrypto.gatewaywebsocket.gdaxwebsocketlistener;
 
 import org.glassfish.tyrus.client.ClientManager;
 import org.slf4j.Logger;
