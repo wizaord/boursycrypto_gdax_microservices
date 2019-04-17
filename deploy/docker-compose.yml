@@ -7,6 +7,7 @@ services:
       - ./data/influxdb:/var/lib/influxdb
     ports:
       - "8086:8086"
+
   chronograf:
     image: dockerproxy-cwfr1.rd.francetelecom.fr/chronograf
     volumes:
@@ -15,3 +16,16 @@ services:
       - "8888:8888"
     links:
       - influxdb
+
+  rabbitmq:
+      image: dockerproxy-cwfr1.rd.francetelecom.fr/rabbitmq:3
+
+  rabbitmq-management:
+    depends_on:
+      - rabbitmq
+    image: dockerproxy-cwfr1.rd.francetelecom.fr/rabbitmq:3-management
+    ports:
+      - "8080:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=password
