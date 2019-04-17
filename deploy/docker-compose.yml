@@ -19,6 +19,8 @@ services:
 
   rabbitmq:
       image: dockerproxy-cwfr1.rd.francetelecom.fr/rabbitmq:3
+      ports:
+        - "5672:5672"
 
   rabbitmq-management:
     depends_on:
