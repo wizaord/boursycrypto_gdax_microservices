@@ -17,17 +17,12 @@ services:
     links:
       - influxdb
 
-  rabbitmq:
-      image: dockerproxy-cwfr1.rd.francetelecom.fr/rabbitmq:3
-      ports:
-        - "5672:5672"
-
   rabbitmq-management:
-    depends_on:
-      - rabbitmq
     image: dockerproxy-cwfr1.rd.francetelecom.fr/rabbitmq:3-management
+    hostname: "gdax-rabbit"
     ports:
+      - "5672:5672"
       - "8080:15672"
     environment:
-      - RABBITMQ_DEFAULT_USER=user
-      - RABBITMQ_DEFAULT_PASS=password
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
