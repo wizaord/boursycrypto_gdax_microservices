@@ -16,4 +16,5 @@ public class RabbitMQConfiguration {
   TopicExchange exchange() {
     return new TopicExchange(RECEIVE_EVENT_EXCHANGE_NAME);
   }
+
 }

@@ -87,7 +87,7 @@ public class FeedListener {
 
   @OnMessage
   public void processMessage(String message) {
-    LOG.debug("GDAX FEED : receive message : {}", message);
+    LOG.debug("GDAX FEED : forward message : {}", message);
     this.rabbitSender.sendMessage(message);
   }
 
