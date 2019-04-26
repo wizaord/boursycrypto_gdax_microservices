@@ -26,3 +26,12 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
+
+  gdaxauthservice:
+    container_name: gdaxauth-service
+    build:
+      context: ..
+      dockerfile: build/gdaxauthservice/Dockerfile
+    image: gdaxauth-service:latest
+    expose:
+      - 28081
