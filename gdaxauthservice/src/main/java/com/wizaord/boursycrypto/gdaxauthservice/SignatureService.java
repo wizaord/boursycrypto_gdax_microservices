@@ -2,8 +2,7 @@ package com.wizaord.boursycrypto.gdaxauthservice;
 
 import com.wizaord.boursycrypto.gdaxauthservice.beans.SignatureHeader;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +17,8 @@ import java.util.Base64;
 
 @Component
 @Setter
+@Slf4j
 public class SignatureService {
-
-  /**
-   * Le logger
-   */
-  private static final Logger LOG = LoggerFactory.getLogger(SignatureService.class);
 
   @Value("${gdax.auth.apisecretkey}")
   private String secretApiKey;
@@ -35,17 +30,17 @@ public class SignatureService {
   private String passphrase;
 
   protected String generateCbAccessSign(String requestPath, String method, String body, String timestamp) {
-    LOG.debug("Generate Signature service with body : {}", body);
+    log.debug("Generate Signature service with body : {}", body);
 
     if (body == null) {
       body = "";
     }
 
     try {
-      LOG.debug("timestamp : {}", timestamp);
-      LOG.debug("method : {}", method.toUpperCase());
-      LOG.debug("requestPath : {}", requestPath);
-      LOG.debug("body : {}", body);
+      log.debug("timestamp : {}", timestamp);
+      log.debug("method : {}", method.toUpperCase());
+      log.debug("requestPath : {}", requestPath);
+      log.debug("body : {}", body);
 
       String prehash = timestamp + method.toUpperCase() + requestPath + body;
       byte[] secretDecoded = Base64.getDecoder().decode(secretApiKey);
@@ -56,11 +51,11 @@ public class SignatureService {
 
       return Base64.getEncoder().encodeToString(sha256.doFinal(prehash.getBytes(StandardCharsets.UTF_8)));
     } catch (InvalidKeyException e) {
-      LOG.error("Cannot set up authentification header", e);
+      log.error("Cannot set up authentification header", e);
       throw new RuntimeErrorException(new Error("Cannot set up authentication headers."));
     }
     catch (NoSuchAlgorithmException e) {
-      LOG.error("Algorithme HmacSHA256 error", e);
+      log.error("Algorithme HmacSHA256 error", e);
       throw new RuntimeErrorException(new Error("Algorithme HmacSHA256 not implemented"));
     }
   }
