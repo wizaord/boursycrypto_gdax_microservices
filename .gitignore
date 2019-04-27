@@ -2,4 +2,5 @@
 /.idea/
 */*.iml
 /deploy/**/*.properties
-/**/application-PROD.properties
+**/application-PROD.properties
+**/node_modules/

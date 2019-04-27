@@ -1,0 +1,14 @@
+{
+  "name": "gateway-websocket-node",
+  "version": "1.0.0",
+  "description": "Reception du fluw GDAX par webSocket",
+  "author": "cedric mouilleron <mouilleron.cedric@gmail.com>",
+  "private": true,
+  "scripts": {
+    "start": "node ./src/main/main.js"
+  },
+  "dependencies": {
+    "axios": "0.18.0",
+    "ws": "6.2.1"
+  }
+}

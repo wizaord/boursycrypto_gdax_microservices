@@ -39,4 +39,19 @@ public class SignatureControllerTestIT {
     assertThat(signatureHeader.getCbAccessSign()).isNotNull();
     assertThat(signatureHeader.getCbAccessTimestamp()).isNotNull();
   }
+
+  @Test
+  public void generateSignature_when_bodyIsMissing_then_return_a_siganture() {
+    // given
+    SignatureRequest signReq = new SignatureRequest("/myPath/plop", "POST", null);
+
+    // When
+    final ResponseEntity<SignatureHeader> signatureHeaderResponseEntity = this.restTemplate
+            .postForEntity("/signature", signReq, SignatureHeader.class);
+
+    // Then
+    assertThat(signatureHeaderResponseEntity).isNotNull();
+    assertThat(signatureHeaderResponseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+  }
 }
