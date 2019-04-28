@@ -8,6 +8,7 @@
     "start": "node ./src/main/main.js"
   },
   "dependencies": {
+    "amqplib": "0.5.3",
     "axios": "0.18.0",
     "ws": "6.2.1"
   }
