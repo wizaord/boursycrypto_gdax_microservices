@@ -23,15 +23,26 @@ services:
     ports:
       - "5672:5672"
       - "8080:15672"
+    expose:
+      - 5672
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
 
-  gdaxauthservice:
-    container_name: gdaxauth-service
+  gdax-auth-service:
+    container_name: gdax-auth-service
     build:
       context: ..
-      dockerfile: build/gdaxauthservice/Dockerfile
+      dockerfile: deploy/build/gdaxauthservice/Dockerfile
     image: gdaxauth-service:latest
+    ports:
+      - "28081:28081"
     expose:
       - 28081
+
+  gdax-gateway-websocket:
+    container_name: gdax-gateway-websocket
+    build:
+      context: ..
+      dockerfile: deploy/build/gateway-websocket-nodejs/Dockerfile
+    image: gdax-gateway-websocket:latest
