@@ -52,3 +52,10 @@ services:
       context: ..
       dockerfile: deploy/build/gateway-websocket-nodejs/Dockerfile
     image: gdax-gateway-websocket:latest
+
+  influxdb-store:
+    container_name: influxdb-store
+    build:
+      context: ..
+      dockerfile: deploy/build/influxdb-store-service/Dockerfile
+    image: gdax-influxdb-store:latest
