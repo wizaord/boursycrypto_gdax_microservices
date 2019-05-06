@@ -1,6 +1,21 @@
+
 const WebSocket = require('ws');
 const amqp = require('amqplib/callback_api');
 const axios = require('axios');
+const winston = require('winston');
+
+// logger
+const logger = winston.createLogger({
+    format: winston.format.combine(
+        winston.format.timestamp(),
+        winston.format.simple(),
+        winston.format.splat()
+    ),
+    transports: [
+        new winston.transports.Console()
+    ]
+});
+
 
 // axios configuration
 axios.defaults.headers.post['Content-Type'] = 'application/json';
@@ -43,20 +58,20 @@ var amqpCh = null;
 function startAmqp() {
     amqp.connect(amqpUri, function(err, conn) {
         if (err) {
-            console.error("[AMQP]", err.message);
+            logger.error("[AMQP]", err.message);
             return setTimeout(startAmqp, 5000);
         }
         conn.on("error", function(err) {
             if (err.message !== "Connection closing") {
-                console.error("[AMQP] conn error", err.message);
+                logger.error("[AMQP] conn error", err.message);
             }
         });
         conn.on("close", function() {
-            console.error("[AMQP] reconnecting");
+            logger.error("[AMQP] reconnecting");
             return setTimeout(startAmqp, 5000);
         });
 
-        console.log("[AMQP] connected");
+        logger.info("[AMQP] connected");
         amqpconn = conn;
 
         whenAmqpConnected();
@@ -71,7 +86,7 @@ function whenAmqpConnected() {
 function initAmqpPublisher() {
     amqpconn.createChannel(function (err, ch) {
         ch.assertExchange('receiveGDAXEvent', 'fanout', {durable: true});
-        console.log("[AMQP] exchange receiveGDAXEvent created");
+        logger.info("[AMQP] exchange receiveGDAXEvent created");
         amqpCh = ch;
     });
 }
@@ -81,13 +96,13 @@ function startwebSocketListener() {
     ws = new WebSocket(webSocketGdaxURL);
 
     ws.on('close', function close() {
-        console.log('disconnected from GDAX WEBSOCKET');
-        ws = new WebSocket(webSocketGdaxURL);
+        logger.warn('disconnected from GDAX WEBSOCKET');
+        return setTimeout(startwebSocketListener, 5000);
     });
 
     ws.on('open', function open() {
-        console.log("New session established");
-        console.log("Sending subscribe request to the webSocket");
+        logger.info("New session established");
+        logger.info("Sending subscribe request to the webSocket");
 
         axios({
             method: 'post',
@@ -100,12 +115,12 @@ function startwebSocketListener() {
                 subscribeRequest.passphrase = response.data.cbAccessPassphrase;
                 subscribeRequest.timestamp = response.data.cbAccessTimestamp;
 
-                console.log('Sending subscriberequest => ' + JSON.stringify(subscribeRequest));
+                logger.info('Sending subscriberequest => ' + JSON.stringify(subscribeRequest));
                 ws.send(JSON.stringify(subscribeRequest));
                 startListeningGDaxEvent();
             })
             .catch(function (error) {
-                console.log("Erreur lors du contact de gdaxAuthService " + error);
+                logger.error("Erreur lors du contact de gdaxAuthService " + error);
                 ws.close();
                 return setTimeout(startwebSocketListener, 2000);
             });
@@ -115,6 +130,7 @@ function startwebSocketListener() {
 function startListeningGDaxEvent() {
     ws.on('message', function incoming(data) {
         let opts = { contentType : 'text'};
+        logger.debug("Receiving event {}", data);
         amqpCh.publish('receiveGDAXEvent', '', Buffer.from(data), opts);
     });
 }
