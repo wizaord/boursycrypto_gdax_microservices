@@ -22,4 +22,5 @@ A la première connexion il sera demandé :
     - influx URL = http://influxdb:8086
     - db name = db0
     - Laisser le login et password vide
+Ensuite aller créer la db 0 dans l'IHM
     
