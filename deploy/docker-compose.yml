@@ -5,8 +5,45 @@ volumes:
     name: "influx_data"
   chronograf_data:
     name: "chronograf_data"
+  elk_data:
+    name: "elk_data"
+    driver: local
 
 services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elk_data:/usr/share/elasticsearch/data
+    ports:
+      - 8200:8200
+      - 9200:9200
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.1.1
+    container_name: kibana
+    environment:
+      - SERVER_NAME=kibana.localhost
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+    ports:
+      - 5601:5601
+    expose:
+      - 5601
+    links:
+      - elasticsearch
+    depends_on:
+      - elasticsearch
+
   influxdb:
     image: dockerproxy-cwfr1.rd.francetelecom.fr/influxdb
     volumes:
