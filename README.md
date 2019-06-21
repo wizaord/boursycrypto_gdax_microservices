@@ -15,6 +15,13 @@ Il faut créér la BDD de influxdb via la commande
     docker-compose up
 ```
 
+# Pour développer
+```bash
+    docker image prune -a
+    docker-compose rm -sfv
+    docker-compose build
+    docker-compose up
+```
 # Se connecter a telegraph (IHM suivi application)
 URL : http://localhost:8888
 

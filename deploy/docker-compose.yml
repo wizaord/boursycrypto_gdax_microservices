@@ -10,42 +10,53 @@ volumes:
     driver: local
 
 services:
-  elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
-    container_name: elasticsearch
-    environment:
-      - discovery.type=single-node
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - elk_data:/usr/share/elasticsearch/data
-    ports:
-      - 8200:8200
-      - 9200:9200
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:7.1.1
-    container_name: kibana
-    environment:
-      - SERVER_NAME=kibana.localhost
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
-      - ELASTICSEARCH_HOST=elasticsearch
-      - ELASTICSEARCH_PORT=9200
-    ports:
-      - 5601:5601
-    expose:
-      - 5601
-    links:
-      - elasticsearch
-    depends_on:
-      - elasticsearch
+#  elasticsearch:
+#    image: docker.elastic.co/elasticsearch/elasticsearch:7.1.1
+#    container_name: elasticsearch
+#    environment:
+#      - discovery.type=single-node
+#      - bootstrap.memory_lock=true
+#      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
+#    volumes:
+#      - elk_data:/usr/share/elasticsearch/data
+#    ports:
+#      - 8200:8200
+#      - 9200:9200
+#
+#  logstash:
+#    image: docker.elastic.co/logstash/logstash:7.1.1
+#    container_name: logstash
+#    command: logstash --config.string input { tcp { port => 5001 } } output { elasticsearch { hosts => elasticsearch:9200 } }
+##    volumes:
+##      - ./conf:/etc/logstash/conf.d/
+#    ports:
+#      - "5000:5000"
+#    links:
+#      - elasticsearch
+#
+#  kibana:
+#    image: docker.elastic.co/kibana/kibana:7.1.1
+#    container_name: kibana
+#    environment:
+#      - SERVER_NAME=kibana.localhost
+#      - ELASTICSEARCH_URL=http://elasticsearch:9200
+#      - ELASTICSEARCH_HOST=elasticsearch
+#      - ELASTICSEARCH_PORT=9200
+#    ports:
+#      - 5601:5601
+#    expose:
+#      - 5601
+#    links:
+#      - elasticsearch
+#    depends_on:
+#      - elasticsearch
 
   influxdb:
-    image: dockerproxy-cwfr1.rd.francetelecom.fr/influxdb
+    image: influxdb
     volumes:
       - influx_data:/var/lib/influxdb
     ports:
@@ -54,7 +65,7 @@ services:
       - 8086
 
   chronograf:
-    image: dockerproxy-cwfr1.rd.francetelecom.fr/chronograf
+    image: chronograf
     volumes:
       - chronograf_data:/var/lib/chronograf
     ports:
@@ -63,7 +74,7 @@ services:
       - influxdb
 
   rabbitmq-management:
-    image: dockerproxy-cwfr1.rd.francetelecom.fr/rabbitmq:3-management
+    image: rabbitmq:3-management
     hostname: "gdax-rabbit"
     ports:
       - "5672:5672"
